@@ -28,9 +28,11 @@ CREATE TABLE `customer` (
   `cust_email` varchar(100) NOT NULL,
   `cust_phone` varchar(15) DEFAULT NULL,
   `cust_address` varchar(255) DEFAULT NULL,
+  `driving_license_no` varchar(50) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`cust_id`),
   UNIQUE KEY `cust_email` (`cust_email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +41,7 @@ CREATE TABLE `customer` (
 
 LOCK TABLES `customer` WRITE;
 /*!40000 ALTER TABLE `customer` DISABLE KEYS */;
-INSERT INTO `customer` VALUES (1,'Ravi Kumar','ravi@gmail.com','9876001111','Chennai'),(2,'Priya Sharma','priya@gmail.com','9876002222','Bangalore');
+INSERT INTO `customer` VALUES (3,'Ravi Kumar','ravi.kumar@gmail.com','9876543210','12A, Anna Nagar, Chennai','TN12 2021 4567890','ravi@123'),(4,'Priya Sharma','priya.sharma@yahoo.com','9123456780','45B, Indiranagar, Bangalore','KA09 2020 9988776','priya@456'),(5,'Arjun Mehta','arjun.mehta@gmail.com','9001122334','88C, Banjara Hills, Hyderabad','TS10 2022 1122334','arjun@789'),(6,'Sneha Patel','sneha.patel@gmail.com','9090876543','23, Satellite, Ahmedabad','GJ01 2019 5566778','sneha@321'),(7,'Rahul Verma','rahul.verma@gmail.com','9823456701','19, Koregaon Park, Pune','MH12 2023 3344556','rahul@999');
 /*!40000 ALTER TABLE `customer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,6 +179,8 @@ CREATE TABLE `reservation` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `status` enum('Booked','Cancelled','Completed') DEFAULT 'Booked',
+  `pickup_location` varchar(100) DEFAULT NULL,
+  `cancel_details` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`reservation_id`),
   KEY `cust_id` (`cust_id`),
   KEY `emp_id` (`emp_id`),
@@ -193,7 +197,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
-INSERT INTO `reservation` VALUES (1,1,2,1,'2025-10-10','2025-10-12','2025-10-14','Booked'),(2,2,3,2,'2025-10-11','2025-10-15','2025-10-18','Booked');
+INSERT INTO `reservation` VALUES (1,1,2,1,'2025-10-10','2025-10-12','2025-10-14','Booked',NULL,NULL),(2,2,3,2,'2025-10-11','2025-10-15','2025-10-18','Booked',NULL,NULL);
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -265,4 +269,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-14 21:43:42
+-- Dump completed on 2025-10-21  1:19:35
