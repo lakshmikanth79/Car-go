@@ -63,7 +63,7 @@ CREATE TABLE `employee` (
   UNIQUE KEY `emp_email` (`emp_email`),
   KEY `manager_id` (`manager_id`),
   CONSTRAINT `employee_ibfk_1` FOREIGN KEY (`manager_id`) REFERENCES `employee` (`emp_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,7 +72,7 @@ CREATE TABLE `employee` (
 
 LOCK TABLES `employee` WRITE;
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
-INSERT INTO `employee` VALUES (1,'John Manager','john@carrent.com','9876543210','Manager',NULL),(2,'Sara Staff','sara@carrent.com','9876501234','Staff',NULL),(3,'Alex Staff','alex@carrent.com','9876505678','Staff',NULL);
+INSERT INTO `employee` VALUES (1,'Amit Verma','amit.verma@cargo.in','9876543210','Manager',NULL),(2,'Priya Sharma','priya.sharma@cargo.in','9876543211','Manager',NULL),(3,'Ravi Kumar','ravi.kumar@cargo.in','9876543212','Manager',NULL),(4,'Lakshmi Nair','lakshmi.nair@cargo.in','9876543213','Staff',1),(5,'Vikram Patel','vikram.patel@cargo.in','9876543214','Staff',1),(6,'Sanjay Mehta','sanjay.mehta@cargo.in','9876543215','Staff',1),(7,'Neha Joshi','neha.joshi@cargo.in','9876543216','Staff',2),(8,'Arjun Singh','arjun.singh@cargo.in','9876543217','Staff',2),(9,'Kiran Das','kiran.das@cargo.in','9876543218','Staff',2),(10,'Deepa Menon','deepa.menon@cargo.in','9876543219','Staff',3),(11,'Rahul Pillai','rahul.pillai@cargo.in','9876543220','Staff',3),(12,'Sneha Iyer','sneha.iyer@cargo.in','9876543221','Staff',3),(13,'Gaurav Chauhan','gaurav.chauhan@cargo.in','9876543222','Staff',3),(14,'Meena Reddy','meena.reddy@cargo.in','9876543223','Staff',3),(15,'Harish Babu','harish.babu@cargo.in','9876543224','Staff',3);
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -213,14 +213,16 @@ CREATE TABLE `vehicle` (
   `reg_no` varchar(20) NOT NULL,
   `model` varchar(100) NOT NULL,
   `brand` varchar(100) DEFAULT NULL,
+  `manufacture_year` year NOT NULL DEFAULT '2022',
   `vehicle_type` enum('Car','Bike','SUV','Van') DEFAULT NULL,
   `status` enum('Available','Rented','Maintenance') DEFAULT 'Available',
   `emp_id` int DEFAULT NULL,
+  `rent_per_day` decimal(10,2) NOT NULL DEFAULT '0.00',
   PRIMARY KEY (`vehicle_id`),
   UNIQUE KEY `reg_no` (`reg_no`),
   KEY `emp_id` (`emp_id`),
   CONSTRAINT `vehicle_ibfk_1` FOREIGN KEY (`emp_id`) REFERENCES `employee` (`emp_id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +231,7 @@ CREATE TABLE `vehicle` (
 
 LOCK TABLES `vehicle` WRITE;
 /*!40000 ALTER TABLE `vehicle` DISABLE KEYS */;
-INSERT INTO `vehicle` VALUES (1,'TN10AB1234','Swift','Maruti','Car','Available',2),(2,'TN22XY5678','Innova','Toyota','SUV','Available',2),(3,'TN33JK9999','Activa','Honda','Bike','Available',3);
+INSERT INTO `vehicle` VALUES (12,'TN01AB001','Dzire','Maruti Suzuki',2021,'Car','Available',4,1500.00),(13,'TN01AB002','Dzire','Maruti Suzuki',2022,'Car','Available',5,1500.00),(14,'TN01AB003','Dzire','Maruti Suzuki',2023,'Car','Available',6,1500.00),(15,'TN02CD001','City','Honda',2022,'Car','Available',7,2000.00),(16,'TN02CD002','City','Honda',2023,'Car','Available',8,2000.00),(17,'TN03EF001','Virtus','Volkswagen',2022,'Car','Available',9,2500.00),(18,'TN03EF002','Virtus','Volkswagen',2023,'Car','Available',10,2500.00),(19,'TN03EF003','Virtus','Volkswagen',2024,'Car','Available',11,2500.00),(20,'TN04GH001','Innova','Toyota',2022,'SUV','Available',12,3500.00),(21,'TN04GH002','Innova','Toyota',2023,'SUV','Available',13,3500.00),(22,'TN05IJ001','M4','BMW',2024,'Car','Available',14,7000.00);
 /*!40000 ALTER TABLE `vehicle` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -245,6 +247,7 @@ CREATE TABLE `vehicleavailability` (
   `available_from` date NOT NULL,
   `available_to` date NOT NULL,
   `status` enum('Available','Booked') DEFAULT 'Available',
+  `last_updated` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`vehicle_id`,`available_from`),
   CONSTRAINT `vehicleavailability_ibfk_1` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicle` (`vehicle_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -256,7 +259,7 @@ CREATE TABLE `vehicleavailability` (
 
 LOCK TABLES `vehicleavailability` WRITE;
 /*!40000 ALTER TABLE `vehicleavailability` DISABLE KEYS */;
-INSERT INTO `vehicleavailability` VALUES (1,'2025-10-15','2025-10-20','Available'),(2,'2025-10-19','2025-10-25','Available'),(3,'2025-10-13','2025-10-25','Available');
+INSERT INTO `vehicleavailability` VALUES (12,'2025-10-22','2025-10-25','Available','2025-10-21 08:43:28'),(13,'2025-10-23','2025-10-28','Available','2025-10-21 08:43:28'),(14,'2025-10-24','2025-10-30','Available','2025-10-21 08:43:28'),(15,'2025-10-22','2025-10-26','Available','2025-10-21 08:43:28'),(16,'2025-10-23','2025-10-29','Available','2025-10-21 08:43:28'),(17,'2025-10-24','2025-10-31','Available','2025-10-21 08:43:28'),(18,'2025-10-25','2025-11-01','Available','2025-10-21 08:43:28'),(19,'2025-10-26','2025-11-02','Available','2025-10-21 08:43:28'),(20,'2025-10-22','2025-10-27','Available','2025-10-21 08:43:28'),(21,'2025-10-23','2025-10-28','Available','2025-10-21 08:43:28'),(22,'2025-10-24','2025-10-30','Available','2025-10-21 08:43:28');
 /*!40000 ALTER TABLE `vehicleavailability` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -269,4 +272,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-10-21  1:19:35
+-- Dump completed on 2025-10-21 14:14:24
