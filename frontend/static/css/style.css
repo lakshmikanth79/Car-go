@@ -1,0 +1,807 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: url('../images/car-bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Poppins', sans-serif;
+}
+
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px 60px;
+    background-color:  #000;
+    backdrop-filter: blur(50px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 99;
+
+    display: block;
+    list-style-type: disc;
+    margin-block-end: 1em;
+    margin-inline-start: 0px;
+    margin-inline-end: 0px;
+    padding-inline-start: 40px;
+
+
+}
+
+header .navigation ul {
+    float: right;
+    margin-right: 20px;
+}
+
+header .navigation ul li {
+    display: inline-block;
+    line-height: 50px;
+    margin: 0 5px;
+}
+
+header .navigation ul li a {
+    position: relative;
+    font-size: 0.9em;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    margin-left: 40px;
+    padding: 7px 13px;
+    border-radius: 3px;
+    text-transform: uppercase;
+
+}
+
+header .navigation ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 100%;
+    height: 3px;
+    border-radius: 5px;
+    transform-origin: 50% 50%;
+    transform: scaleX(0);
+    transition: transform .5s;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+    background: linear-gradient(to right, #fff, #f3f3f3);
+}
+
+header .navigation ul li a:hover::after {
+    transform-origin: right;
+    transform: scaleX(1);
+}
+
+header .navigation ul li .btnLogin-popup {
+    width: 110px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 40px;
+
+}
+
+header .navigation ul li .btnLogin-popup:hover {
+    background-color: #05190A;
+    color: #fff;
+
+}
+
+
+ul li a.active,
+ul li a:hover {
+    background: #05190A;
+    transition: .5s;
+}
+
+.check_btn {
+    font-size: 25px;
+    color: white;
+    float: left;
+    line-height: 50px;
+    margin-right: 10px;
+    cursor: pointer;
+    display: none;
+
+}
+
+#check {
+    display: none;
+}
+
+@media(max-width:858px) {
+    .check_btn {
+        display: block;
+    }
+
+    ul {
+        position: fixed;
+        width: 50%;
+        height: 70vh;
+        background: #2c5038;
+        top: 100px;
+        left: -100%;
+        text-align: left;
+        transition: all .5s;
+        border: 2px solid #c9c8c8;
+        border-radius: 6px;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    }
+
+    header .navigation ul li {
+        display: block;
+        margin: 50px 0;
+        line-height: 30px;
+
+    }
+
+    header .navigation ul li a {
+        font-size: 20px;
+    }
+
+    #check:checked~ul {
+        left: 0;
+    }
+}
+
+/* logo*/
+.logo {
+    color: white;
+    user-select: none;
+    font-size: 25px;
+    line-height: 50px;
+    padding: 0 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+}
+.logo .highlight{
+    color: red;
+}
+
+.cover_box {
+  position: relative;
+  width: 400px;
+  height: 460px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  transform: scale(0);
+  transition: transform 0.3s ease, height 0.2s ease;
+}
+
+.cover_box:hover {
+    border-color: #fff;
+    animation: border-glow 1s infinite alternate;
+}
+
+@keyframes border-glow {
+    from {
+        border-color: #f6f8f6;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    to {
+        border-color: #ffffff;
+        box-shadow: 0 0 20px rgba(200, 200, 200, 1);
+    }
+}
+
+.cover_box.active-popup {
+    transform: scale(1);
+}
+
+.cover_box.active {
+    height: 680px;
+}
+
+.cover_box .form-box {
+  position: absolute;
+  width: 100%;
+  padding: 40px;
+  transition: all 0.6s ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(100px);
+}
+
+.cover_box .form-box.login {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.cover_box.active .form-box.login {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-100px);
+}
+
+.cover_box.active .form-box.register {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.cover_box .form-box.register {
+    width: 100%;
+    position: absolute;
+    top: -50px;
+    right: 0;
+    transform: translateX(400px);
+    transition: none;
+
+    /* 👇 Add these lines only 👇 */
+    max-height: 800px;       /* limits height so it fits screen */
+    overflow-y: auto;        /* enables scroll only if needed */
+    padding-right: 10px;     /* space for scrollbar */
+}
+
+/* Optional: Scrollbar styling to match design */
+.cover_box .form-box.register::-webkit-scrollbar {
+    width: 6px;
+}
+.cover_box .form-box.register::-webkit-scrollbar-thumb {
+    background-color: #05190A;
+    border-radius: 10px;
+}
+.cover_box .form-box.register::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+
+.cover_box .icon-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 45px;
+    height: 45px;
+    background: #05190A;
+    font-size: 2em;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    z-index: 1;
+    cursor: pointer;
+}
+
+.form-box h2 {
+    font-size: 2em;
+    color: #05190A;
+    text-align: center;
+}
+
+.input-box {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 30px 0;
+}
+
+/* Label styling */
+.input-box label {
+    position: absolute;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    font-size: 1em;
+    color: #05190A;
+    font-weight: 500;
+    pointer-events: none;
+    transition: 0.3s ease;
+    background: transparent;
+    padding: 0 4px;
+}
+
+/* Input box styling */
+.input-box input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: 1px solid #fff;
+    border-radius: 10px;
+    outline: none;
+    font-size: 1em;
+    color: #05190A;
+    font-weight: 600;
+    padding: 14px 35px 0 10px;
+}
+
+/* Label floats up on focus OR when the field is not empty */
+.input-box input:focus + label,
+.input-box input:not(:placeholder-shown) + label {
+    top: -10px;
+    left: 10px;
+    font-size: 0.85em;
+    color: #000;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 4px;
+    padding: 0 5px;
+}
+
+/* Icon styling */
+.input-box .icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2em;
+    color: #05190A;
+}
+
+.remeber-forgot {
+    font-size: .9em;
+    color: #05190A;
+    font-weight: 500;
+    margin: -15px 0 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.remeber-forgot label input {
+    accent-color: #05190a;
+    margin-right: 3px;
+}
+
+.remeber-forgot a {
+    color: #05190A;
+    text-decoration: underline;
+}
+
+.remeber-forgot a:hover {
+    text-decoration: underline;
+}
+
+.btn {
+    width: 100%;
+    height: 45px;
+    background: #05190A;  
+    border: none;
+    outline: none;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.6s ease-in-out;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5), -3px -3px 10px rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Hover Effect with Smooth Scaling & Shadow */
+.btn:hover {
+    transform: scale(1.1);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.6), -5px -5px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Text Animation - Slight Delay */
+.btn:hover span {
+    letter-spacing: 2px;
+    transition: letter-spacing 0.4s ease-in-out 0.2s;
+}
+
+/* Active Click Effect */
+.btn:active {
+    transform: scale(0.95);
+    box-shadow: inset 3px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Smooth Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.btn {
+    width: 100%;
+    height: 45px;
+    background: #05190A; 
+    border: none;
+    outline: none;
+    border-radius: 100px;
+    cursor: pointer;
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+    transition: all 0.4s ease-in-out;
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* Hover Effect with Smooth Gradient Shift */
+.btn:hover {
+    background: linear-gradient(135deg, #05190A, #FFFFFF); 
+    transform: scale(1.07);
+    box-shadow: 0 10px 20px rgba(133, 135, 132, 0.5);
+}
+
+/* Text Animation - Slight Delay */
+.btn:hover span {
+    letter-spacing: 2px;
+    transition: letter-spacing 0.4s ease-in-out 0.2s;
+}
+
+/* Ripple Effect on Click */
+.btn:active {
+    transform: scale(0.97);
+    box-shadow: 0 5px 10px rgba(255, 59, 59, 0.3);
+}
+
+/* Smooth Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-register {
+    font-size: .9em;
+    color: #05190A;
+    text-align: center;
+    font-weight: 500;
+    margin: 25px 0 10px;
+}
+
+.login-register p a {
+    color: #9a9a9a;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.login-register p a:hover {
+    text-decoration: underline;
+}
+.login-register p li{
+    color: white;
+    text-decoration: underline;
+}
+/* footer */
+.footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    color:#fff;
+    padding: 10px 0;
+    text-align: center;
+    background-color: rgb(255, 255, 255, 0.2);
+    backdrop-filter: blur(0.5px);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 0 10px;
+}
+
+.social-icon a {
+    color: #fff;
+    font-size: 1.5em;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color o.3s ease-in-out;
+}
+
+.footer-content p {
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.social-icon a:hover {
+    color: #05190A;
+
+}
+
+.footer-content p:hover {
+    color: #05190A;
+}
+
+/* Contact Us */
+
+header .navigation ul li .btnLogin-popup-con {
+    width: 110px;
+    height: 40px;
+    background: transparent;
+    border: 2px solid #fff;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1.1em;
+    color: #fff;
+    font-weight: 500;
+    margin-left: 40px;
+
+}
+
+header .navigation ul li .btnLogin-popup-con:hover {
+    background-color: #05190A;
+    color: #fff;
+
+}
+.contact-section {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    border: 2px solid #c9c8c8;
+    border-radius: 10px;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+/* Ensure checkbox visibility */
+.contact-form input[type="checkbox"] {
+    transform: scale(1); /* Reset scaling */
+    transition: transform 0.3s ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 1; /* Ensure visibility */
+}
+
+.contact-section.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+h2 {
+    color: #05190A;
+}
+
+p {
+    color: #05190A;
+    line-height: 1.6;
+}
+
+.contact-form {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.contact-form label {
+    display: block;
+    font-weight: bold;
+    margin: 10px 0 5px;
+    color: #05190A;
+}
+
+.contact-form input, 
+.contact-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.contact-form textarea {
+    resize: none;
+}
+
+.contact-form button {
+    width: 100%;
+    padding: 10px;
+    background: #05190A;
+    color: white;
+    border: none;
+    border-radius: 100px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.contact-form button:hover {
+    background: linear-gradient(135deg, #05190A, #FFFFFF); 
+    transform: scale(1.07);
+    box-shadow: 0 10px 20px rgba(133, 135, 132, 0.5);
+}
+
+/* Text Animation - Slight Delay */
+.contact-form button span {
+    letter-spacing: 2px;
+    transition: letter-spacing 0.4s ease-in-out 0.2s;
+}
+
+/* Ripple Effect on Click */
+.contact-form button:active {
+    transform: scale(0.97);
+    box-shadow: 0 5px 10px rgba(255, 59, 59, 0.3);
+}
+
+
+.contact-info {
+    margin-top: 20px;
+    font-size: 0.9em;
+    color: #05190A;
+}
+
+.contact-section:hover {
+    border-color: #fff;
+    animation: border-glow 1s infinite alternate;
+}
+
+@keyframes border-glow {
+    from {
+        border-color: #f6f8f6;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+    to {
+        border-color: #ffffff;
+        box-shadow: 0 0 20px rgba(200, 200, 200, 1);
+    }
+}
+
+.contact-form .icon {
+    position: absolute;
+    right: 8px;
+    font-size: 1.2em;
+    color: #05190A;
+    line-height: 57px;
+}
+
+/* CONTACT POPUP OVERLAY */
+.contact-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s;
+    z-index: 1000;
+}
+
+/* Show popup */
+.contact-popup.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Contact form box inside popup */
+.contact-section {
+    position: relative;
+    max-width: 500px;
+    width: 90%;
+    margin: 0;
+    padding: 30px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    border: 2px solid #c9c8c8;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+/* Animate box in when popup shows */
+.contact-popup.show .contact-section {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Close button */
+.close-contact {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    font-size: 2.2rem;           /* slightly larger for visibility */
+    font-weight: 600;
+    color: #05190A;              /* dark green tone to match theme */
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(4px);  /* glassy background */
+    border-radius: 50%;          /* makes it circular */
+    width: 36px;
+    height: 36px;
+    line-height: 32px;           /* vertically center the “×” */
+    text-align: center;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.25s ease-in-out;
+    border: 1px solid rgba(5, 25, 10, 0.2);
+}
+
+.close-contact:hover {
+    transform: scale(1.15) rotate(90deg);  /* smooth animation */
+    background-color: #05190A;
+    color: #fff;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  opacity: 0;
+  transition: opacity 0.6s ease;
+}
+
+body.fade-in {
+  opacity: 1;
+}
+/* Additional styling for new Register fields */
+.form-box.register .input-box {
+  margin-bottom: 20px;
+}
+
+.input-box input[type="tel"],
+.input-box input[type="text"],
+.input-box input[type="email"],
+.input-box input[type="password"] {
+  color: #fff;
+}
+
+.input-box input:focus + label,
+.input-box input:valid + label {
+  top: -10px;
+  font-size: 0.9em;
+  color: #ffffff;
+}
+
+.btn {
+  background: #05190A;
+  color: #fff;
+  border-radius: 50px;
+  transition: 0.3s ease;
+}
+
+.btn:hover {
+  background: linear-gradient(135deg, #05190A, #ffffff);
+  color: #05190A;
+  transform: scale(1.05);
+}
+
