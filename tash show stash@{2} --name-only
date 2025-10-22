@@ -1,0 +1,14 @@
+.gitignore
+frontend/images/city.webp
+frontend/images/dzire.avif
+frontend/images/innova.avif
+frontend/images/m4.avif
+frontend/images/virtus.jpg
+frontend/static/css/aboutUs.css
+frontend/static/css/booking.css
+frontend/static/css/cd
+frontend/static/css/confirmation.css
+frontend/static/css/home.css
+frontend/static/css/payment.css
+frontend/static/css/style.css
+frontend/static/images/car-bg.jpg
