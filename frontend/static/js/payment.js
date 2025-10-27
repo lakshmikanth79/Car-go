@@ -1,120 +1,135 @@
 // payment.js
 
-document.getElementById('paymentForm').addEventListener('submit', function (e) {
+document.addEventListener("DOMContentLoaded", async () => {
+  const status = document.getElementById("paymentStatus");
+  const params = new URLSearchParams(window.location.search);
+  const rent_id = params.get("rent_id");
+
+  if (!rent_id) {
+    alert("⚠️ Missing rent ID. Redirecting to home...");
+    window.location.href = "home.html";
+    return;
+  }
+
+  let bookingData;
+  try {
+    const bookingResp = await fetch(`http://127.0.0.1:5000/api/bookings/rent/${rent_id}`);
+    bookingData = await bookingResp.json();
+    if (!bookingData.success) throw new Error(bookingData.message || "Booking not found");
+  } catch (err) {
+    console.error("❌ Error fetching booking:", err);
+    alert("⚠️ Unable to load booking details. Please try again.");
+    window.location.href = "home.html";
+    return;
+  }
+
+  const { vehicle_id, start_date, end_date, cust_id, total_amount } = bookingData;
+
+  let vehicle;
+  try {
+    const vehicleResp = await fetch(`http://127.0.0.1:5000/api/vehicles/${vehicle_id}`);
+    vehicle = await vehicleResp.json();
+  } catch (err) {
+    console.error("❌ Error fetching vehicle:", err);
+    alert("⚠️ Unable to load vehicle details. Please try again.");
+    return;
+  }
+
+  document.getElementById("vehicleName").textContent = `${vehicle.brand} ${vehicle.model}`;
+  document.getElementById("dateRange").textContent = `${start_date} → ${end_date}`;
+  document.getElementById("totalAmount").textContent = total_amount;
+
+  const paymentForm = document.getElementById("paymentForm");
+
+  // ---------- Form Submission ----------
+  paymentForm.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const cardName = document.getElementById('cardName');
-    const cardNumber = document.getElementById('cardNumber');
-    const expiry = document.getElementById('expiry');
-    const cvv = document.getElementById('cvv');
-    const status = document.getElementById('paymentStatus');
+    const cardName = document.getElementById("cardName").value.trim();
+    const cardNumber = document.getElementById("cardNumber").value.trim();
+    const expiry = document.getElementById("expiry").value.trim();
+    const cvv = document.getElementById("cvv").value.trim();
 
-    const cardNumberError = document.getElementById('cardNumberError');
-    const cvvError = document.getElementById('cvvError');
-    const nameError = document.getElementById('nameError');
-    const expiryError = document.getElementById('expiryError');
+    const nameError = document.getElementById("nameError");
+    const cardNumberError = document.getElementById("cardNumberError");
+    const expiryError = document.getElementById("expiryError");
+    const cvvError = document.getElementById("cvvError");
+
+    [nameError, cardNumberError, expiryError, cvvError].forEach(el => el.textContent = "");
 
     let isValid = true;
 
-    // Reset all errors
-    cardNumberError.textContent = "";
-    cvvError.textContent = "";
-    nameError.textContent = "";
-    expiryError.textContent = "";
-
-    // ---- Card Name Validation ----
-    if (cardName.value.trim() === "") {
-        nameError.textContent = "⚠️ Please enter the cardholder name.";
-        isValid = false;
+    // ✅ Only alphabets and spaces allowed for name
+    if (!/^[A-Za-z ]+$/.test(cardName)) {
+      nameError.textContent = "⚠️ Name must contain only letters.";
+      isValid = false;
     }
 
-    // ---- Card Number Validation ----
-    if (cardNumber.value.trim() === "") {
-        cardNumberError.textContent = "⚠️ Please enter your card number.";
-        isValid = false;
-    } else if (!/^\d+$/.test(cardNumber.value.trim())) {
-        cardNumberError.textContent = "❌ Card number must contain only digits.";
-        isValid = false;
-    } else if (cardNumber.value.trim().length < 16) {
-        cardNumberError.textContent = `⚠️ ${16 - cardNumber.value.trim().length} digits missing. Card must be 16 digits.`;
-        isValid = false;
-    } else if (cardNumber.value.trim().length > 16) {
-        cardNumberError.textContent = "⚠️ Card number cannot exceed 16 digits.";
-        isValid = false;
+    // ✅ Only numbers, exactly 16 digits
+    if (!/^\d{16}$/.test(cardNumber)) {
+      cardNumberError.textContent = "⚠️ Card number must be 16 digits (numbers only).";
+      isValid = false;
     }
 
-    // ---- Expiry Validation ----
-    if (expiry.value.trim() === "") {
-        expiryError.textContent = "⚠️ Please enter the expiry date.";
-        isValid = false;
+    if (!expiry) {
+      expiryError.textContent = "⚠️ Enter the expiry date.";
+      isValid = false;
     }
 
-    // ---- CVV Validation ----
-    if (cvv.value.trim() === "") {
-        cvvError.textContent = "⚠️ Please enter your CVV.";
-        isValid = false;
-    } else if (!/^\d+$/.test(cvv.value.trim())) {
-        cvvError.textContent = "❌ CVV must contain only digits.";
-        isValid = false;
-    } else if (cvv.value.trim().length < 3) {
-        cvvError.textContent = `⚠️ ${3 - cvv.value.trim().length} digits missing. CVV must be 3 digits.`;
-        isValid = false;
-    } else if (cvv.value.trim().length > 3) {
-        cvvError.textContent = "⚠️ CVV cannot exceed 3 digits.";
-        isValid = false;
+    // ✅ CVV must be 3 digits, only numbers
+    if (!/^\d{3}$/.test(cvv)) {
+      cvvError.textContent = "⚠️ CVV must be 3 digits (numbers only).";
+      isValid = false;
     }
 
     if (!isValid) {
-        status.textContent = "⚠️ Please fix the highlighted errors.";
-        status.style.color = "red";
-        return;
+      status.textContent = "❌ Please fix the errors above.";
+      status.style.color = "red";
+      return;
     }
 
-    // Simulate payment processing
     status.textContent = "Processing your payment...";
     status.style.color = "black";
 
-    setTimeout(() => {
-        // 🔗 Backend Integration (future use)
-        // fetch('http://localhost:8080/api/payment', { ... })
+    const paymentData = {
+      rent_id: parseInt(rent_id),
+      cust_id: cust_id,
+      amount: parseFloat(total_amount),
+      payment_method: "Card"
+    };
 
-        // Mock success
-        status.textContent = "✅ Payment Successful! Redirecting...";
-        status.style.color = "green";
-        setTimeout(() => {
-            window.location.href = "confirmation.html";
-        }, 2000);
-    }, 2000);
-});
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/payments/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(paymentData)
+      });
 
-// ------------------ LIVE INPUT CHECK ------------------
+      const data = await response.json();
+      if (!response.ok || !data.success) throw new Error(data.message || "Payment failed");
 
-// Attach live check for card number
-document.getElementById('cardNumber').addEventListener('input', function () {
-    const val = this.value.trim();
-    const error = document.getElementById('cardNumberError');
-    error.textContent = "";
+      status.textContent = "✅ Payment successful! Redirecting...";
+      status.style.color = "green";
 
-    if (!/^\d*$/.test(val)) {
-        error.textContent = "❌ Only numbers allowed.";
-    } else if (val.length < 16) {
-        error.textContent = `⚠️ ${16 - val.length} digits missing.`;
-    } else if (val.length > 16) {
-        error.textContent = "⚠️ Card number cannot exceed 16 digits.";
+      setTimeout(() => {
+        window.location.href = `confirmation.html?rent_id=${rent_id}`;
+      }, 2000);
+
+    } catch (err) {
+      console.error("❌ Payment failed:", err);
+      status.textContent = "❌ Payment failed. Cancelling booking...";
+      status.style.color = "red";
+
+      try {
+        await fetch("http://127.0.0.1:5000/api/payments/cancel", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ rent_id: rent_id })
+        });
+        console.log("⚠️ Booking cancelled due to failed payment");
+      } catch (cancelErr) {
+        console.error("⚠️ Failed to cancel booking:", cancelErr);
+      }
     }
-});
-
-// Attach live check for CVV
-document.getElementById('cvv').addEventListener('input', function () {
-    const val = this.value.trim();
-    const error = document.getElementById('cvvError');
-    error.textContent = "";
-
-    if (!/^\d*$/.test(val)) {
-        error.textContent = "❌ Only numbers allowed.";
-    } else if (val.length < 3) {
-        error.textContent = `⚠️ ${3 - val.length} digits missing.`;
-    } else if (val.length > 3) {
-        error.textContent = "⚠️ CVV cannot exceed 3 digits.";
-    }
+  });
 });
