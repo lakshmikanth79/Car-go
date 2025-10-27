@@ -1,4 +1,22 @@
+/* Make footer stay at bottom */
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Let main take up remaining space */
+main {
+    flex: 1;
+}
+
+
 body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
     font-family: 'Poppins', sans-serif;
     margin: 0;
     background-color: #f3f4f6;
@@ -7,6 +25,7 @@ body {
 
 /* -------------------- HEADER -------------------- */
 header {
+    
     background-color: #0f0f0f;
     border-bottom: 2px solid #3a3a3a;
     padding: 15px 50px;
@@ -158,9 +177,10 @@ footer {
     border-top: 2px solid #3a3a3a;
     color: #ffffff;
     text-align: center;
-    padding: 30px 0;
-    font-size: 14px;
+    padding: 10px 0;      /* 🔹 Reduced from 30px to 10px */
+    font-size: 13px;      /* 🔹 Slightly smaller text */
     letter-spacing: 0.5px;
+    margin-top: auto;     /* 🔹 Ensures it stays at bottom with flex layout */
 }
 
 footer span {

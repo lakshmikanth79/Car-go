@@ -1,24 +1,58 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const downloadBtn = document.getElementById("downloadReceipt");
+// ✅ confirmation.js — Car-Go
+document.addEventListener("DOMContentLoaded", async () => {
+  const params = new URLSearchParams(window.location.search);
+  const rent_id = params.get("rent_id");
 
-    // 🔗 Backend Integration:
-    // In real implementation, fetch booking details dynamically:
-    // fetch("http://localhost:8080/api/booking/confirmation?bookingId=BK2025001")
-    //   .then(res => res.json())
-    //   .then(data => {
-    //       document.querySelector(".receipt").innerHTML = `
-    //           <h3>Booking Receipt</h3>
-    //           <p><strong>Booking ID:</strong> ${data.bookingId}</p>
-    //           <p><strong>Name:</strong> ${data.userName}</p>
-    //           <p><strong>Car:</strong> ${data.carName}</p>
-    //           <p><strong>Pickup Date:</strong> ${data.pickupDate}</p>
-    //           <p><strong>Return Date:</strong> ${data.returnDate}</p>
-    //           <p><strong>Total Amount Paid:</strong> ₹ ${data.totalAmount}</p>
-    //       `;
-    //   });
+  const bookingIdEl = document.getElementById("bookingId");
+  const custNameEl = document.getElementById("custName");
+  const vehicleNameEl = document.getElementById("vehicleName");
+  const pickupDateEl = document.getElementById("pickupDate");
+  const returnDateEl = document.getElementById("returnDate");
+  const paymentDateEl = document.getElementById("paymentDate");
+  const totalAmountEl = document.getElementById("totalAmount");
 
-    // Download or print the receipt
+  if (!rent_id) {
+    document.getElementById("bookingSummary").innerHTML =
+      "<p style='color:red;'>⚠️ No booking reference found. Please go back to home.</p>";
+    return;
+  }
+
+  try {
+    // 🔹 Fetch payment + related booking details
+    const response = await fetch(`http://127.0.0.1:5000/api/payments/${rent_id}`);
+    const data = await response.json();
+
+    console.log("Payment details response:", data); // ✅ Debugging
+
+    if (!response.ok || !data.success) {
+      document.getElementById("bookingSummary").innerHTML =
+        `<p style='color:red;'>⚠️ ${data.message || "Payment record not found."}</p>`;
+      return;
+    }
+
+    // 🔹 Extract payment object from response
+    const payment = data.payment;
+
+    // 🔹 Populate confirmation fields
+    bookingIdEl.textContent = payment.rent_id || "N/A";
+    custNameEl.textContent = payment.customer_name || "N/A";
+    vehicleNameEl.textContent = payment.vehicle_name || "N/A";
+    pickupDateEl.textContent = payment.start_date || "N/A";
+    returnDateEl.textContent = payment.end_date || "N/A";
+    paymentDateEl.textContent = payment.payment_date || "N/A";
+    totalAmountEl.textContent = payment.amount || "N/A";
+
+  } catch (error) {
+    console.error("❌ Error loading confirmation:", error);
+    document.getElementById("bookingSummary").innerHTML =
+      "<p style='color:red;'>⚠️ Unable to load confirmation details. Please try again later.</p>";
+  }
+
+  // 🔹 Print / Download Receipt
+  const downloadBtn = document.getElementById("downloadReceipt");
+  if (downloadBtn) {
     downloadBtn.addEventListener("click", () => {
-        window.print(); // simple print/download feature
+      window.print();
     });
+  }
 });
