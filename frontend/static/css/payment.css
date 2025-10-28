@@ -113,3 +113,19 @@ footer {
     margin-top: 3px;
     display: block;
 }
+
+#timerBox {
+  text-align: center;
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  margin-bottom: 15px;
+  border: 1px solid #ffeeba;
+}
+
+#timer {
+  font-size: 20px;
+  font-weight: bold;
+}
