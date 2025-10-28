@@ -1,6 +1,36 @@
 // payment.js
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+  // Countdown Timer (2 minutes)
+  let timeLeft = 120; // 2 minutes = 120 seconds
+  const timerDisplay = document.getElementById("timer");
+  const form = document.getElementById("paymentForm");
+
+  const countdown = setInterval(() => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerDisplay.textContent = `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+
+    if (timeLeft <= 0) {
+      clearInterval(countdown);
+      timerDisplay.textContent = "00:00";
+      timerDisplay.style.color = "red";
+
+      // Disable the form
+      form.querySelectorAll("input, button").forEach(el => (el.disabled = true));
+
+      // Show message
+      document.getElementById("paymentMessage").textContent =
+        "❌ Payment session expired. Please go back and start again.";
+      document.getElementById("paymentMessage").style.color = "red";
+    }
+
+    timeLeft--;
+  }, 1000);
+
   const status = document.getElementById("paymentStatus");
   const params = new URLSearchParams(window.location.search);
   const rent_id = params.get("rent_id");

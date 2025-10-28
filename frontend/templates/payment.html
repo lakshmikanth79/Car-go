@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="../static/css/payment.css">
   <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet">
 </head>
+
 <body>
 
   <header>
@@ -29,26 +31,30 @@
         <p><strong>Duration:</strong> <span id="dateRange"></span></p>
         <p><strong>Total Amount:</strong> ₹<span id="totalAmount"></span></p>
       </div>
-        <form id="paymentForm">
-    <label>Cardholder Name</label>
-    <input type="text" id="cardName" required>
-    <small id="nameError" class="error"></small>
+      <div id="timerBox">
+        ⏳ <span id="timer">02:00</span> remaining to complete your payment
+      </div>
 
-    <label>Card Number</label>
-    <input type="text" id="cardNumber" maxlength="16" required>
-    <small id="cardNumberError" class="error"></small>
+      <form id="paymentForm">
+        <label>Cardholder Name</label>
+        <input type="text" id="cardName" required>
+        <small id="nameError" class="error"></small>
 
-    <label>Expiry Date</label>
-    <input type="month" id="expiry" required>
-    <small id="expiryError" class="error"></small>
+        <label>Card Number</label>
+        <input type="text" id="cardNumber" maxlength="16" required>
+        <small id="cardNumberError" class="error"></small>
 
-    <label>CVV</label>
-    <input type="text" id="cvv" maxlength="3" required>
-    <small id="cvvError" class="error"></small>
+        <label>Expiry Date</label>
+        <input type="month" id="expiry" required>
+        <small id="expiryError" class="error"></small>
 
-     <button type="submit" class="btn">Make Payment</button>
-    <p id="paymentStatus"></p>
-</form>
+        <label>CVV</label>
+        <input type="text" id="cvv" maxlength="3" required>
+        <small id="cvvError" class="error"></small>
+
+        <button type="submit" class="btn">Make Payment</button>
+        <p id="paymentStatus"></p>
+      </form>
 
       <div id="paymentMessage" class="success-message"></div>
     </div>
@@ -62,4 +68,5 @@
   <script src="../static/js/payment.js"></script>
 
 </body>
+
 </html>

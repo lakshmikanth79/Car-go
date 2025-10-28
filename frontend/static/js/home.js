@@ -3,12 +3,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // 🔹 Image map for each brand + model
   const vehicleImages = {
-    "Maruti Suzuki Dzire": "/images/dzire.avif",
-    "Honda City": "/images/city.webp",
-    "Volkswagen Virtus": "/images/virtus.jpg",
-    "Toyota Innova": "/images/innova.avif",
-    "BMW M4": "/images/m4.avif"
+  "Maruti Suzuki Dzire": "http://127.0.0.1:5000/images/dzire.avif",
+  "Honda City": "http://127.0.0.1:5000/images/city.webp",
+  "Volkswagen Virtus": "http://127.0.0.1:5000/images/virtus.jpg",
+  "Toyota Innova": "http://127.0.0.1:5000/images/innova.avif",
+  "BMW M4": "http://127.0.0.1:5000/images/m4.avif"
   };
+
 
   try {
     // 🔹 Fetch all vehicles from backend
