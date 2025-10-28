@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Car Rental</title>
+    <link rel="stylesheet" href="../static/css/profile.css">
+    <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+   <header>
+    <div class="navigation">
+        <div class="logo">C<span class="highlight">AR</span>-Go</div>
+        <nav>
+            <ul>
+                <li><a href="home.html">HOME</a></li>
+               
+                <li><a href="profile.html" class="active">PROFILE</a></li>
+                <li><button class="logout-btn" id="logoutBtn">LOGOUT</button></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+    <main>
+        <section class="profile-header">
+            <h2>Welcome, <span id="username">User</span>!</h2>
+            <p>Your booking history and account details are shown below.</p>
+        </section>
+
+        <section class="bookings">
+            <h3>Your Bookings</h3>
+            <div class="booking-tabs">
+                <button class="tab-btn active" id="currentTab">Current Bookings</button>
+                <button class="tab-btn" id="pastTab">Past Bookings</button>
+            </div>
+
+            <div class="booking-list" id="bookingList">
+                <!-- JS will dynamically populate bookings here -->
+            </div>
+        </section>
+    </main>
+
+    <footer>
+       <p>&copy; 2025 Car-Go. All rights reserved.</p>
+    </footer>
+
+    <script src="../static/js/profile.js"></script>
+</body>
+</html>

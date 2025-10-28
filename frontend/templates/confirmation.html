@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Booking Confirmation | Car-Go</title>
+  <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet" />
+  <link rel="stylesheet" href="../static/css/confirmation.css" />
+</head>
+
+<body>
+  <!-- 🔹 HEADER -->
+  <header>
+    <div class="navigation">
+      <div class="logo">Car<span class="highlight">Go</span></div>
+      <ul>
+        <li><a href="home.html">HOME</a></li>
+        <li><a href="profile.html">PROFILE</a></li>
+        <li><a href="index.html">LOGOUT</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- 🔹 CONFIRMATION CONTENT -->
+  <div class="confirmation-container">
+    <div class="confirmation-box">
+      <h2 id="successTitle">✅ Payment Successful!</h2>
+      <p id="successMessage">
+        Thank you for your booking. Your payment has been received successfully.
+      </p>
+
+      <!-- 🔹 RECEIPT DETAILS -->
+      <div class="receipt" id="bookingSummary">
+        <h3>Booking Receipt</h3>
+        <p><strong>Booking ID:</strong> <span id="bookingId">Loading...</span></p>
+        <p><strong>Name:</strong> <span id="custName">Loading...</span></p>
+        <p><strong>Car:</strong> <span id="vehicleName">Loading...</span></p>
+        <p><strong>Pickup Date:</strong> <span id="pickupDate">Loading...</span></p>
+        <p><strong>Return Date:</strong> <span id="returnDate">Loading...</span></p>
+        <p><strong>Payment Date:</strong> <span id="paymentDate">Loading...</span></p>
+        <p><strong>Total Amount Paid:</strong> ₹ <span id="totalAmount">Loading...</span></p>
+      </div>
+
+      <button class="btn" id="downloadReceipt">Download / Print Receipt</button>
+    </div>
+  </div>
+
+  <!-- 🔹 FOOTER -->
+  <footer>
+    <p>© 2025 Car-Go | All rights reserved</p>
+  </footer>
+
+  <script src="../static/js/confirmation.js"></script>
+</body>
+</html>

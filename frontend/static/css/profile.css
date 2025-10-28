@@ -1,0 +1,188 @@
+/* Make footer stay at bottom */
+html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Let main take up remaining space */
+main {
+    flex: 1;
+}
+
+
+body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    background-color: #f3f4f6;
+    color: #333;
+}
+
+/* -------------------- HEADER -------------------- */
+header {
+    
+    background-color: #0f0f0f;
+    border-bottom: 2px solid #3a3a3a;
+    padding: 15px 50px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 1px;
+}
+
+.logo .highlight {
+    color: #e74c3c; /* only AR is red */
+}
+
+.navigation {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 35px;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #ffffff;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+    color: #e74c3c;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.logout-btn:hover {
+    color: #e74c3c;
+}
+
+
+main {
+    padding: 30px 60px;
+}
+
+.profile-header {
+    text-align: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+.profile-header h2 {
+    color: #333;
+    margin: 0;
+}
+
+.booking-tabs {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.tab-btn {
+    padding: 10px 20px;
+    margin: 0 10px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    color: #333;
+    transition: background 0.3s;
+}
+
+.tab-btn.active {
+    background-color: #f39c12;
+    color: white;
+}
+
+.tab-btn:hover {
+    background-color: #f1c40f;
+    color: white;
+}
+
+.booking-list {
+    display: grid;
+    gap: 20px;
+}
+
+.booking-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.booking-details h4 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.booking-details p {
+    margin: 4px 0;
+    color: #555;
+}
+
+.cancel-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background 0.3s;
+}
+
+.cancel-btn:hover {
+    background-color: #c0392b;
+}
+
+footer {
+    background-color: #0f0f0f;
+    border-top: 2px solid #3a3a3a;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px 0;      /* 🔹 Reduced from 30px to 10px */
+    font-size: 13px;      /* 🔹 Slightly smaller text */
+    letter-spacing: 0.5px;
+    margin-top: auto;     /* 🔹 Ensures it stays at bottom with flex layout */
+}
+
+footer span {
+    color: #e74c3c;
+}
