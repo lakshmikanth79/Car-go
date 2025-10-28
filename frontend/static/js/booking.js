@@ -1,94 +1,68 @@
-// booking.js
+const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle"));
+const user = JSON.parse(localStorage.getItem("loggedInUser"));
 
-// ---------- TEMPORARY STATIC DATA (Replace with backend integration) ----------
-const selectedVehicle = JSON.parse(localStorage.getItem("selectedVehicle")) || {
-  vehicle_id: 12,
-  brand: "Maruti Suzuki",
-  model: "Dzire",
-  type: "Car",
-  rent_per_day: 1500,
-  image: "../images/dzire.avif"
-};
+if (!selectedVehicle || !user) {
+  alert("⚠️ Missing vehicle or user info! Please log in again.");
+  window.location.href = "login.html";
+}
 
-// ---------- POPULATE VEHICLE INFO ----------
-document.getElementById("vehicleImage").src = selectedVehicle.image;
+document.getElementById("vehicleImage").src = `../images/${selectedVehicle.image || 'default.jpg'}`;
 document.getElementById("vehicleName").innerText = `${selectedVehicle.brand} ${selectedVehicle.model}`;
-document.getElementById("vehicleType").innerText = selectedVehicle.type;
-document.getElementById("vehicleBrand").innerText = selectedVehicle.brand;
-document.getElementById("rentPerDay").innerText = `${selectedVehicle.rent_per_day}`;
+document.getElementById("rentPerDay").innerText = selectedVehicle.rent_per_day;
 
-// ---------- CALCULATE TOTAL RENT ----------
 const startDateEl = document.getElementById("startDate");
 const endDateEl = document.getElementById("endDate");
 const totalRentEl = document.getElementById("totalRent");
 
 function calculateTotal() {
-  const startDate = new Date(startDateEl.value);
-  const endDate = new Date(endDateEl.value);
-
-  if (!startDateEl.value || !endDateEl.value) {
-    totalRentEl.innerText = "0";
-    return;
-  }
-
-  if (endDate < startDate) {
-    totalRentEl.innerText = "Invalid date range";
-    return;
-  }
-
-  // 🧮 Calculate number of days (include same-day booking as 1 day)
-  const diffDays = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24)) + 1;
-
-  const total = diffDays * selectedVehicle.rent_per_day;
-  totalRentEl.innerText = `${total}`;
+  if (!startDateEl.value || !endDateEl.value) return (totalRentEl.innerText = "0");
+  const start = new Date(startDateEl.value);
+  const end = new Date(endDateEl.value);
+  const days = Math.max(1, (end - start) / (1000 * 60 * 60 * 24) + 1);
+  const total = days * selectedVehicle.rent_per_day;
+  totalRentEl.innerText = total;
+  return { days, total };
 }
 
-startDateEl.addEventListener("change", calculateTotal);
-endDateEl.addEventListener("change", calculateTotal);
+[startDateEl, endDateEl].forEach((el) => el.addEventListener("change", calculateTotal));
 
-// ---------- FORM SUBMISSION ----------
-document.getElementById("bookingForm").addEventListener("submit", (e) => {
+document.getElementById("bookingForm").addEventListener("submit", async (e) => {
   e.preventDefault();
 
-  const pickupLocation = document.getElementById("pickupLocation").value;
-  const startDate = startDateEl.value;
-  const endDate = endDateEl.value;
-
-  if (!startDate || !endDate) {
-    alert("Please select both start and end dates!");
-    return;
-  }
-
-  const totalAmount = totalRentEl.innerText.replace("₹", "").trim();
+  const { days, total } = calculateTotal();
 
   const bookingData = {
-    cust_id: 1, // 🔹 Replace with logged-in customer ID (from backend session)
+    cust_id: user.cust_id,
     vehicle_id: selectedVehicle.vehicle_id,
-    start_date: startDate,
-    end_date: endDate,
-    pickup_location: pickupLocation,
-    total_rent: totalAmount
+    start_date: startDateEl.value,
+    end_date: endDateEl.value,
+    pickup_location: document.getElementById("pickupLocation").value,
   };
 
-  console.log("Booking Data (frontend mock):", bookingData);
+  try {
+    const res = await fetch("http://127.0.0.1:5000/booking/create", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(bookingData),
+    });
 
-  // 🔹 BACKEND INTEGRATION POINT:
-  // fetch("/api/book_vehicle", {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify(bookingData)
-  // })
-  // .then(res => res.json())
-  // .then(data => {
-  //   if (data.success) {
-  //     localStorage.setItem("bookingData", JSON.stringify(data));
-  //     window.location.href = "payment.html";
-  //   } else {
-  //     alert("Booking failed!");
-  //   }
-  // });
+    const result = await res.json();
 
-  // 🧩 TEMP FRONTEND REDIRECT (simulate backend success)
-  localStorage.setItem("bookingData", JSON.stringify(bookingData));
-  window.location.href = "payment.html";
+    if (result.success) {
+      // ✅ Save both calculated and backend booking info
+      const storedBooking = {
+        ...bookingData,
+        booking_id: result.booking_id || result.reservation_id,
+        totalAmount: total,
+        days,
+      };
+      localStorage.setItem("bookingDetails", JSON.stringify(storedBooking));
+      window.location.href = "payment.html";
+    } else {
+      alert("❌ Booking failed! " + (result.message || ""));
+    }
+  } catch (err) {
+    console.error("Booking error:", err);
+    alert("⚠️ Server error during booking.");
+  }
 });
