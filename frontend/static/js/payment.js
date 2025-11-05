@@ -2,6 +2,13 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+  // 🔒 Restrict expiry date input (cannot pick month older than current month)
+  const expiryInput = document.getElementById("expiry");
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  expiryInput.min = `${year}-${month}`;
+
   // Countdown Timer (2 minutes)
   let timeLeft = 120; // 2 minutes = 120 seconds
   const timerDisplay = document.getElementById("timer");

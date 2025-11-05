@@ -161,41 +161,47 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // ✅ CONTACT FORM SUBMISSION + STORE LOCALLY
-  if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
-      e.preventDefault();
+  // ✅ CONTACT FORM SUBMISSION 
+   if (contactForm) {
+  contactForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      const name = contactForm.querySelector("#name").value.trim();
-      const email = contactForm.querySelector("#email").value.trim();
-      const message = contactForm.querySelector("#message").value.trim();
-      const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    const name = contactForm.querySelector("#name").value.trim();
+    const email = contactForm.querySelector("#email").value.trim();
+    const message = contactForm.querySelector("#message").value.trim();
+    const emailPattern = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
-      if (!name || !email || !message) {
-        alert("Please fill in all fields.");
-        return;
-      }
+    if (!name || !email || !message) {
+      alert("⚠️ Please fill in all fields.");
+      return;
+    }
 
-      if (!emailPattern.test(email)) {
-        alert("Please enter a valid email.");
-        return;
-      }
+    if (!emailPattern.test(email)) {
+      alert("⚠️ Please enter a valid email.");
+      return;
+    }
 
-      const existingMessages = JSON.parse(localStorage.getItem("contactMessages")) || [];
-      existingMessages.push({
-        name,
-        email,
-        message,
-        timestamp: new Date().toLocaleString(),
+    try {
+      const response = await fetch("http://127.0.0.1:5000/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
       });
-      localStorage.setItem("contactMessages", JSON.stringify(existingMessages));
 
-      alert("✅ Message sent successfully!");
+      const data = await response.json();
 
-      contactForm.reset();
-      setTimeout(() => {
-        contactPopup.classList.remove("show");
-      }, 100);
-    });
-  }
+      if (data.success) {
+        alert("✅ Message sent successfully!");
+        contactForm.reset();
+        setTimeout(() => contactPopup.classList.remove("show"), 100);
+      } else {
+        alert("❌ " + (data.message || "Failed to send message"));
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
+      alert("⚠️ Server error. Please try again later.");
+    }
+  });
+}
+
 });

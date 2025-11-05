@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,21 +9,23 @@
     <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
-   <header>
-    <div class="navigation">
-        <div class="logo">C<span class="highlight">AR</span>-Go</div>
-        <nav>
-            <ul>
-                <li><a href="home.html">HOME</a></li>
-               
-                <li><a href="profile.html" class="active">PROFILE</a></li>
-                <li><button class="logout-btn" id="logoutBtn">LOGOUT</button></li>
-            </ul>
-        </nav>
-    </div>
-</header>
 
+<body>
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="navigation">
+            <div class="logo">C<span class="highlight">AR</span>-Go</div>
+            <nav>
+                <ul>
+                    <li><a href="home.html">HOME</a></li>
+                    <li><a href="profile.html" class="active">PROFILE</a></li>
+                    <li><button class="logout-btn" id="logoutBtn">LOGOUT</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
     <main>
         <section class="profile-header">
             <h2>Welcome, <span id="username">User</span>!</h2>
@@ -31,6 +34,7 @@
 
         <section class="bookings">
             <h3>Your Bookings</h3>
+
             <div class="booking-tabs">
                 <button class="tab-btn active" id="currentTab">Current Bookings</button>
                 <button class="tab-btn" id="pastTab">Past Bookings</button>
@@ -42,10 +46,28 @@
         </section>
     </main>
 
+    <!-- ===== FOOTER ===== -->
     <footer>
-       <p>&copy; 2025 Car-Go. All rights reserved.</p>
+        <p>&copy; 2025 Car-Go. All rights reserved.</p>
     </footer>
 
+    <!-- ===== CANCEL BOOKING MODAL ===== -->
+    <div id="cancelModal" class="modal">
+        <div class="modal-content">
+            <h2>Cancel Booking</h2>
+            <p>Please provide a reason for cancellation:</p>
+            <textarea id="cancelReason" placeholder="Enter reason here..."></textarea>
+
+            <div class="modal-buttons">
+                <button id="confirmCancelBtn" class="confirm">Confirm</button>
+                <button id="closeModalBtn" class="cancel">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ===== SCRIPTS ===== -->
     <script src="../static/js/profile.js"></script>
 </body>
+
 </html>

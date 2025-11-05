@@ -2,13 +2,21 @@
 
 document.addEventListener("DOMContentLoaded", async () => {
   const params = new URLSearchParams(window.location.search);
-  const vehicleId = params.get("vehicle_id");
 
-  if (!vehicleId) {
+  // ✅ Support multiple vehicle IDs
+  const vehicleIdsParam = params.get("vehicle_ids");
+  if (!vehicleIdsParam) {
     alert("No vehicle selected!");
     window.location.href = "home.html";
     return;
   }
+
+  // Convert comma-separated list into array of integers
+  const vehicleIds = vehicleIdsParam.split(",").map(id => parseInt(id.trim()));
+  console.log("✅ Vehicle IDs received:", vehicleIds);
+
+  // We'll use the first vehicle to show brand/model info
+  const sampleVehicleId = vehicleIds[0];
 
   const vehicleImages = {
     "Dzire": "../images/dzire.avif",
@@ -19,8 +27,8 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   try {
-    // 🔹 Fetch selected vehicle details from backend
-    const response = await fetch(`http://127.0.0.1:5000/api/vehicles/${vehicleId}`);
+    // 🔹 Fetch sample vehicle details
+    const response = await fetch(`http://127.0.0.1:5000/api/vehicles/${sampleVehicleId}`);
     if (!response.ok) throw new Error("Vehicle not found");
     const vehicle = await response.json();
 
@@ -41,7 +49,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     startDateEl.min = today;
     endDateEl.min = today;
 
-    // ---------- 💰 Rent Calculation ----------
+    
+    // ---------- 💰 Rent Calculation + 25-Day Limit ----------
     function calculateTotal() {
       const startDate = new Date(startDateEl.value);
       const endDate = new Date(endDateEl.value);
@@ -62,13 +71,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     startDateEl.addEventListener("change", () => {
-      // Set end date's minimum = selected start date
+      if (!startDateEl.value) return;
+
+      // 🔹 Minimum and maximum range setup
       endDateEl.min = startDateEl.value;
-      calculateTotal();
+
+      // 🔹 Limit selection to 25 days after start date
+      const maxEndDate = new Date(startDateEl.value);
+      maxEndDate.setDate(maxEndDate.getDate() + 24); // 25 days total inclusive
+      endDateEl.max = maxEndDate.toISOString().split("T")[0];
+
+      // Reset end date and total rent display
+      endDateEl.value = "";
+      totalRentEl.innerText = "0";
     });
 
     endDateEl.addEventListener("change", calculateTotal);
 
+
+    endDateEl.addEventListener("change", calculateTotal);
 
     // ---------- 📦 Form Submission ----------
     document.getElementById("bookingForm").addEventListener("submit", (e) => {
@@ -95,15 +116,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
+      // ✅ Send all vehicle IDs instead of one
       const bookingData = {
         cust_id: parseInt(custId),
-        vehicle_id: vehicle.vehicle_id,
+        vehicle_ids: vehicleIds,
         start_date: startDate,
         end_date: endDate,
         pickup_location: pickupLocation,
         total_rent: totalAmount
       };
-
 
       console.log("Booking Data:", bookingData);
 
@@ -120,14 +141,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           if (result.success) {
             console.log("✅ Booking successful:", result);
 
-            // Store necessary info for payment page
             localStorage.setItem("bookingData", JSON.stringify({
               ...bookingData,
               reservation_id: result.reservation_id,
               rent_id: result.rent_id
             }));
 
-            // Redirect with rent_id in URL for clarity
             window.location.href = `payment.html?rent_id=${result.rent_id}`;
           } else {
             alert(result.message || "Booking failed!");

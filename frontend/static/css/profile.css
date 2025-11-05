@@ -186,3 +186,115 @@ footer {
 footer span {
     color: #e74c3c;
 }
+
+/* =======================
+   CANCEL MODAL STYLING
+======================= */
+
+/* ===== CANCEL MODAL (FIXED CENTERED) ===== */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed;
+    inset: 0; /* shorthand for top:0; left:0; right:0; bottom:0 */
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* ✅ Higher than footer or any other element */
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    background: #ffffff;
+    width: 400px;
+    padding: 25px 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    animation: popIn 0.3s ease;
+}
+
+
+.modal-content h2 {
+    margin-bottom: 10px;
+    color: #222;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.modal-content p {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+#cancelReason {
+    width: 100%;
+    height: 80px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    font-family: 'Poppins', sans-serif;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#cancelReason:focus {
+    border-color: #e74c3c;
+}
+
+/* Buttons inside modal */
+.modal-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.modal-buttons button {
+    flex: 1;
+    margin: 0 5px;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal-buttons .confirm {
+    background-color: #e74c3c;
+    color: white;
+    font-weight: 600;
+}
+
+.modal-buttons .confirm:hover {
+    background-color: #c0392b;
+}
+
+.modal-buttons .cancel {
+    background-color: #e0e0e0;
+    color: #333;
+    font-weight: 500;
+}
+
+.modal-buttons .cancel:hover {
+    background-color: #ccc;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
